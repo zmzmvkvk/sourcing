@@ -26,7 +26,28 @@ Python을 기반으로 아래 웹사이트에서 필요한 데이터를 자동�
 
 #### 1.1 네이버 데이터랩
 - **수집 데이터**: 특정 카테고리 또는 키워드의 월간 검색량 추이
-- **구현 방법**: Selenium을 활용한 동적 데이터 수집
+- **구현 방법**: 
+```python - coding: utf-8 -
+import os
+import sys
+import urllib.request
+client_id = "VoXDKXzudUkyPZEDg0uF"
+client_secret = "0P3fl_JiWB"
+url = "https://openapi.naver.com/v1/datalab/search";
+body = "{\"startDate\":\"2017-01-01\",\"endDate\":\"2017-04-30\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]},{\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}],\"device\":\"pc\",\"ages\":[\"1\",\"2\"],\"gender\":\"f\"}";
+
+request = urllib.request.Request(url)
+request.add_header("X-Naver-Client-Id",client_id)
+request.add_header("X-Naver-Client-Secret",client_secret)
+request.add_header("Content-Type","application/json")
+response = urllib.request.urlopen(request, data=body.encode("utf-8"))
+rescode = response.getcode()
+if(rescode==200):
+    response_body = response.read()
+    print(response_body.decode('utf-8'))
+else:
+    print("Error Code:" + rescode)
+```
 
 #### 1.2 아이템스카우트
 - **수집 데이터**: 키워드별 총 상품 수, 경쟁 강도 등 분석 데이터
